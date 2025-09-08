@@ -1,4 +1,4 @@
-const fs = require("fs")
+const fs = require("fs");
 
 // fs.readFile("./docs/blog.txt" , (err , data) => {
 //     if (err) console.log(err);
@@ -9,6 +9,11 @@ const fs = require("fs")
 //     console.log("write readed successfully")
 // })
 
-fs.appendFile("./docs/blog.txt" , "follow bas follow bag" , () => {
-    console.log("append wrrite file successfully")
-})
+// fs.appendFile("./docs/blog.txt" , "follow bas follow bag" , () => {
+//     console.log("append wrrite file successfully")
+// })
+
+fs.mkdir("./docs2", (err) => {
+  if (err) console.log(err);
+  console.log("folder created");
+});
