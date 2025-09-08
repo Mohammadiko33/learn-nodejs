@@ -13,7 +13,12 @@ const fs = require("fs");
 //     console.log("append wrrite file successfully")
 // })
 
-fs.mkdir("./docs2", (err) => {
+// fs.mkdir("./docs2", (err) => {
+//   if (err) console.log(err);
+//   console.log("folder created");
+// });
+
+fs.rmdir("./docs2", () => {
   if (err) console.log(err);
-  console.log("folder created");
+  console.log("folder deleted");
 });
