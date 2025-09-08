@@ -10,11 +10,6 @@ const users = [
     "michle"
 ]
 
-// module.exports = {
-//     admin: admin,
-//     users: users
-// }
-// ||
 module.exports = {
     admin,
     users
