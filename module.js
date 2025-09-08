@@ -1,6 +1,7 @@
-const result = require("./admin")
+const {admin , users} = require("./admin")
 
-console.log(result)
+console.log(admin)
+console.log(users)
 
 
 // paste the | node module.js | in terminal to run code
