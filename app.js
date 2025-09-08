@@ -5,6 +5,10 @@ const fs = require("fs")
 //     console.log(data.toString())
 // })
 
-fs.writeFile("./docs/blog.txt" , "yall nigga las and nas vegas" , () => {
-    console.log("write readed successfully")
+// fs.writeFile("./docs/blog.txt" , "yall nigga las and nas vegas" , () => {
+//     console.log("write readed successfully")
+// })
+
+fs.appendFile("./docs/blog.txt" , "follow bas follow bag" , () => {
+    console.log("append wrrite file successfully")
 })
