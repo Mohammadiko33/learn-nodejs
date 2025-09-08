@@ -4,4 +4,4 @@ const admin = [
     "reza",
 ]
 
-console.log(admin)
+module.exports = admin

@@ -1,2 +1,6 @@
-require("./admin")
-// paste the | node module | in terminal to run code
+const result = require("./admin")
+
+console.log(result)
+
+
+// paste the | node module.js | in terminal to run code
