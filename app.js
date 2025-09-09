@@ -1,23 +1,27 @@
 const express = require("express");
 
 const app = express();
-const fileOption = { root: __dirname };
+
+app.set("view engine", "ejs");
 
 app.listen(3000);
 
 app.get("/", (req, res) => {
-  res.sendFile("./vue/index.html", fileOption);
+  res.render("index")
 });
 
 app.get("/about", (req, res) => {
-  res.sendFile("./vue/about.html", fileOption);
+   res.render("about")
 });
-
 
 app.get("/about-us", (req, res) => {
   res.redirect("/about")
 });
 
+app.get("/blog/new-blog", (req, res) => {
+  res.render("createBlog")
+});
+
 app.use((req , res) => {
-  res.sendFile("./vue/notFounded.html" , fileOption)
+  res.status(404).render("notFounded")
 })
