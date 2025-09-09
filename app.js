@@ -12,3 +12,8 @@ app.get("/", (req, res) => {
 app.get("/about", (req, res) => {
   res.sendFile("./vue/about.html", fileOption);
 });
+
+
+app.get("/about-us", (req, res) => {
+  res.redirect("/about")
+});
