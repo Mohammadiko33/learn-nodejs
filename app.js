@@ -1,16 +1,22 @@
-const http = require("http")
+const fs = require("fs");
+const http = require("http");
 
-const server = http.createServer((req , res) => {
-    console.log(req.url)
-    console.log(req.method)
+const server = http.createServer((req, res) => {
+  console.log(req.url);
+  console.log(req.method);
 
-    res.setHeader("Content-Type" , "text/html")
-    
-    // res.write("<head> <script src='./script.js' defer></script> </head>")
-    res.write("<h1>Hello i'm in course node js</h1>")
-    res.write("<p>this is episode 16</p>")
-})
+  res.setHeader("Content-Type", "text/html");
 
-server.listen(3000 , "localhost" , () => {
-    console.log("server created successfully in port 3000")
-})
+  fs.readFile("./vue/index.html", (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // res.write(data)
+      res.end(data)
+    }
+  });
+});
+
+server.listen(3000, "localhost", () => {
+  console.log("server created successfully in port 3000");
+});
