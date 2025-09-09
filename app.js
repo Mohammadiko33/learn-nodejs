@@ -18,7 +18,12 @@ const fs = require("fs");
 //   console.log("folder created");
 // });
 
-fs.rmdir("./docs2", () => {
+// fs.rmdir(".qodo", () => {
+//   if (err) console.log(err);
+//   console.log("folder deleted");
+// });
+
+fs.unlink("./temp.test.tsx" , (err) => {
   if (err) console.log(err);
-  console.log("folder deleted");
-});
+  console.log("delete file successfully")
+})
