@@ -53,6 +53,32 @@
             animation: pulse 1.5s infinite;
         }
 
+        /* 🚨 کلاس های کمکی */
+
+        .flex {
+            display: flex;
+        }
+
+        .gap-2 {
+            gap: 2rem;
+        }
+
+        .fixed {
+            position: fixed;
+        }
+
+        .top-3 {
+            top: 3rem;
+        }
+
+        .list-none {
+            list-style: none;
+        }
+
+        .-ml-4 {
+            margin-left: -4rem;
+        }
+
         /* 🔥 انیمیشن‌ها */
         @keyframes fadeInDown {
             from {
@@ -96,8 +122,13 @@
         }
     </style>
 </head>
-
 <body>
+    <nav>
+        <ul class="fixed top-3 list-none flex gap-2 -ml-4">
+            <li><a href="/">home</a></li>
+            <li><a href="/about">about</a></li>
+        </ul>
+    </nav>
     <h1 class="text-404">404 - page not found</h1>
     <p>i can't reched</p>
 </body>

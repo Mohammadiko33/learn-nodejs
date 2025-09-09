@@ -17,3 +17,7 @@ app.get("/about", (req, res) => {
 app.get("/about-us", (req, res) => {
   res.redirect("/about")
 });
+
+app.use((req , res) => {
+  res.sendFile("./vue/notFounded.html" , fileOption)
+})
