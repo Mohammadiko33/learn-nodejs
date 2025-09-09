@@ -25,8 +25,13 @@ async function createProject_removeProject({
       console.log("file appended successfully");
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
+    // خواندن فایل قبل از حذف
+    const content = await fs.readFile(address, "utf-8");
+    console.log("File content before delete:\n", content);
+
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     // حذف فایل
     await fs.unlink(address);
     console.log("file deleted successfully");
