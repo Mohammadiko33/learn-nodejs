@@ -1,9 +1,9 @@
+const _ = require("lodash")
 const fs = require("fs");
 const http = require("http");
 
 const server = http.createServer((req, res) => {
-  console.log(req.url);
-  console.log(req.method);
+  console.log(_.random(0 , 20))
 
   path = "./vue/";
   switch (req.url) {
