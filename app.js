@@ -13,6 +13,11 @@ app.set("view engine", "ejs");
 
 app.listen(3000);
 
+// middleware and static files
+
+app.use(express.static("public"))
+
+
 app.use(morgan("tiny"))
 
 app.get("/", (req, res) => {
