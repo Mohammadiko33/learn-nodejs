@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>home</title>
-  <% const num = Math.floor(Math.random() * 6) + 1 %>
   <style>
     /* 🎨 Reset & Base */
     * {
@@ -121,10 +120,9 @@
     </ul>
   </nav>
 
-  <h1>Hello Again</h1>
+  <h1 style="text-transform: capitalize;"><%= titleInApp %></h1>
   <div class="content-card">
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis praesentium iste et quos eos laudantium odit possimus, id facere suscipit minima, tempora vero. Unde, assumenda perferendis a impedit accusantium consequuntur.</p>
-    <h4><%= num %></h4>
   </div>
 </body>
 </html>
