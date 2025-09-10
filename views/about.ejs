@@ -1,129 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>about</title>
-  <style>
-    /* 🎨 Reset & Base */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      text-align: center;
-      background: linear-gradient(135deg, #1984ff, #96bcff);
-      color: #fff;
-      padding: 40px 20px;
-    }
-
-    a {
-      text-decoration: none;
-      color: #fff;
-      font-weight: 500;
-      transition: 0.3s;
-    }
-
-    a:hover {
-      color: #ffcc00;
-    }
-
-    /* 🔹 Nav */
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 2rem;
-      position: fixed;
-      top: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.3);
-      padding: 0.5rem 1rem;
-      border-radius: 12px;
-      backdrop-filter: blur(10px);
-    }
-
-    /* ✨ Heading */
-    h1 {
-            margin-top: 3rem;
-      font-size: 3rem;
-      font-weight: bold;
-      margin-bottom: 1.5rem;
-      background: linear-gradient(90deg, #ff6a00, #ee0979);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: fadeInDown 1s ease;
-    }
-
-    p {
-      max-width: 700px;
-      font-size: 1.2rem;
-      line-height: 1.8;
-      color: rgba(255, 255, 255, 0.85);
-      animation: fadeInUp 1.2s ease;
-      margin-bottom: 2rem;
-    }
-
-    /* 🔹 Card-like Container for About text */
-    .about-card {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-      backdrop-filter: blur(15px);
-      max-width: 800px;
-      width: 100%;
-      animation: fadeInUp 1.5s ease;
-    }
-
-    /* 🔹 Responsive */
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 2.2rem;
-      }
-      nav ul {
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1rem;
-      }
-      .about-card {
-        padding: 1.5rem;
-      }
-    }
-
-    /* 🔹 Animations */
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-</head>
+<%- include("./Components/head.ejs") %>
 <body>
-  <nav>
-    <ul>
-      <li><a href="/">home</a></li>
-      <li><a href="/about">about</a></li>
-      <li><a href="/blog/new-blog">new blog</a></li>
-    </ul>
-  </nav>
+  <%- include("./Components/header.ejs") %>
 
  <h1 style="text-transform: capitalize;"><%= titleInApp %></h1>
   <div class="about-card">
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias et facilis beatae ad non rerum amet! Rerum culpa deserunt odit repellat, laudantium quod quae cum excepturi incidunt corrupti beatae atque!</p>
     <p>Our mission is to provide a modern blogging platform with smooth animations, responsive design, and a clean user interface. Enjoy creating and reading content with style!</p>
   </div>
+
+  <%- include("./Components/footer.ejs") %>
 </body>
 </html>
