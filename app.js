@@ -12,6 +12,13 @@ app.set("view engine", "ejs");
 
 app.listen(3000);
 
+app.use((req , res) => {
+  console.log(`new request was made :`)
+  console.log(`host: ` , req.hostname)
+  console.log(`path: ` , req.path)
+  console.log(`method: ` , req.method)
+})
+
 app.get("/", (req, res) => {
   res.render("index" , {titleInApp: "home", pageTitle: "home" , blogs})
 });

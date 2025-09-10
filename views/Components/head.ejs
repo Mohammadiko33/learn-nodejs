@@ -1,14 +1,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>learn node js | <% pageTitle %></title>
+    <title>learn node js | <%= pageTitle %></title>
     <style>
+        @font-face {
+            font-family: "FiraCode";
+            src: url("/views/Components/FiraCode-Medium.woff2"); /* 👈 don't working */
+        }
         /* 🎨 Reset & Base */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "FiraCode", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;;
         }
 
         body {
