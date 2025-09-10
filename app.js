@@ -12,16 +12,22 @@ app.set("view engine", "ejs");
 
 app.listen(3000);
 
-app.use((req , res) => {
+app.use((req , res , next) => {
   console.log(`new request was made :`)
   console.log(`host: ` , req.hostname)
   console.log(`path: ` , req.path)
   console.log(`method: ` , req.method)
+  next()
 })
 
 app.get("/", (req, res) => {
   res.render("index" , {titleInApp: "home", pageTitle: "home" , blogs})
 });
+
+app.use((req , res , next) => {
+  console.log(`🔥 app.js:28 => -------------- learn node js --------------`)
+  next()
+})
 
 app.get("/about", (req, res) => {
    res.render("about" , { titleInApp: "about", pageTitle: "about" })
