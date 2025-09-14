@@ -1,9 +1,21 @@
-const os = require("os")
+const http = require("http")
 
-console.log(os.cpus())
-console.log(os.arch())
-console.log(Math.floor(os.totalmem() / 1_000_000)) // byte
-console.log(Math.floor(os.freemem() / 1_000_000)) // byte
+const server = http.createServer((req , res) => {
+    console.log(`🔥 Sabzlearn.js:4 => ${req.method}`)
+    console.log(`🔥 Sabzlearn.js:5 => ${req.url}`)
+    res.write(`🔥 Sabzlearn.js:6 => log`)
+})
+
+server.listen(3000)
+
+// --------
+
+// const os = require("os")
+
+// console.log(os.cpus())
+// console.log(os.arch())
+// console.log(Math.floor(os.totalmem() / 1_000_000)) // byte
+// console.log(Math.floor(os.freemem() / 1_000_000)) // byte
 
 // ---------
 
