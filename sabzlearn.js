@@ -1,24 +1,35 @@
-const http = require("http")
+const http = require("http");
+const url = require("url");
 
 const db = {
-    users: ["mohammad" , "amir" , "reza"],
-    products: ["apple" , "joice" , "milk"],
-}
+  users: [
+    { id: 1, name: "mohammad", age: 19 },
+    { id: 2, name: "amir", age: 18 },
+    { id: 3, name: "reza", age: 17 },
+  ],
+};
 
-const server = http.createServer((req , res) => {
-    if (req.url === "/api/users"){
-        res.write(JSON.stringify(db.users))
-        res.end()
-    } else if (req.url === "/api/products") {
-        res.write(JSON.stringify(db.products))
-        res.end()
+const server = http.createServer((req, res) => {
+  const query = url.parse(req.url, true).query;
+
+  if (req.url.startsWith("/api/users")) {
+    const userObj = db.users.find((user) => user.name === query.name);
+
+    if (userObj) {
+      res.write(JSON.stringify(userObj));
     } else {
-        res.write("oopsy ! 404 api is not defaild")
-        res.end()
+      res.writeHead(404, { "Content-Type": "text/plain" });
+      res.write("User not found");
     }
-})
+    res.end();
+  }
+});
 
-server.listen(3000)
+server.listen(3000, () => {
+  console.log("Server is running on http://localhost:3000");
+});
+
+// http://localhost:3000/api/users?name="mohammad"
 
 // -------
 
