@@ -9,8 +9,9 @@ const users = [
 
 const server = http.createServer((req, res) => {
   if (req.url.startsWith("/api/users")){
-    const query = url.parse(req.url, true).query;
-    const result = users.find(user => user.name === query.name)
+    const myUrl = new URL(req.url, `http://${req.headers.host}`);
+    const username = myUrl.searchParams.get("name"); 
+    const result = users.find(user => user.name === username)
     res.write(JSON.stringify(result))
     res.end()
   } else {
