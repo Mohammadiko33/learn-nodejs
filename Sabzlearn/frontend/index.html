@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>leach mob login</title>
+  <style>
+    @font-face {
+      font-family: "samim";
+      src: url("../../public/Samim-Bold-WOL.woff2");
+    }
+
+    *,
+    *::after,
+    *::before {
+      box-sizing: inherit;
+      margin: 0;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "samim", "Poppins";
+      background-color: #080710;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: capitalize;
+      height: 100vh;
+    }
+
+    .login_bottom {
+      width: 100%;
+      padding: 8px 0;
+      margin-top: 1.5rem;
+      background-color: #fffdff;
+      border-radius: 12px;
+      border: 1px solid #fff4ff;
+      cursor: pointer;
+      transition: all 250ms 50ms;
+      box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+      font-size: 24px;
+      text-transform: capitalize;
+      font-weight: 700;
+      display: flex;
+      text-align: center;
+      justify-content: center;
+    }
+
+    span {}
+
+    .login_bottom:hover {
+      background-color: #42A5F5;
+      color: #fff;
+      border: 0.5px solid #0D47A1;
+    }
+
+    .login_bottom:active {
+      background-color: #f5f5f5;
+    }
+
+    .section {}
+
+    .profile {
+      color: #ffff;
+      max-width: 130px;
+      transform: translateY(-230pX);
+      position: fixed;
+
+    }
+
+    .profile img {
+      transition: all 400ms 40ms;
+    }
+
+    .profile ul {
+      transition: all 400ms 40ms;
+    }
+
+    .profile:hover .bottom__profile {
+      background-color: #1565C0;
+    }
+
+    .profile:hover ul {
+      margin-top: 10px;
+      border-radius: 8px;
+      opacity: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 0.8rem;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background-color: #fff;
+      box-shadow: 0 0 15px -2px #ffffff;
+    }
+
+    .profile:hover img {
+      transform: rotate(180deg);
+    }
+
+    .bottom__profile {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      background-color: #1E88E5;
+      padding: 10px;
+      cursor: pointer;
+      transition: all 300ms 20ms;
+      min-width: 10rem;
+      min-height: 3rem;
+    }
+
+    ul {
+      list-style: none;
+      opacity: 0.1;
+      min-width: 10rem;
+    }
+
+    li {
+      width: 100%;
+    }
+
+    li:hover {
+      background-color: #e4e3e32a;
+    }
+
+    a {
+
+      text-decoration: none;
+      color: #080710;
+    }
+
+    .login {
+      width: 400px;
+      height: 450px;
+      position: relative;
+
+
+    }
+
+    .shape {
+      width: 200px;
+      height: 200px;
+      border-radius: 100%;
+      position: absolute;
+      z-index: -1;
+    }
+
+    .shape--one {
+
+      background: linear-gradient(#0D47A1, #42A5F5);
+      top: -80px;
+      left: -80px;
+    }
+
+    .shape--two {
+      background: linear-gradient(45deg, #E65100, #FFA726);
+      bottom: -90px;
+      right: -60px;
+
+    }
+
+
+    form {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.13);
+      color: #fff;
+      padding: 50px 35px 35px 35px;
+      border: 2px solid rgba(255, 255, 255, 0.13);
+      border-radius: 10px;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+
+    h2 {
+      font-size: 32px;
+      text-align: center;
+      margin-bottom: 1.2rem;
+    }
+
+    .form__input-wrapper {
+      margin-bottom: 26px;
+
+    }
+
+    input,
+    button {
+      font-family: inherit;
+      border: none;
+      outline: none;
+      text-transform: capitalize;
+    }
+
+    input {
+      font-size: 14px;
+      font-weight: 300;
+      display: block;
+      height: 50px;
+      background-color: rgba(255, 255, 255, 0.07);
+      padding: 0 10px;
+      width: 100%;
+      margin-top: 16px;
+      color: #fff;
+      border-radius: 4px;
+    }
+
+    .form__input::placeholder {
+      color: #e5e5e5;
+    }
+
+    label {
+      font-size: 16px;
+      margin-top: 0.75rem;
+      display: block;
+    }
+
+    label:first-child {
+      margin-top: 0.5rem;
+    }
+
+    button {
+      background-color: #fff;
+      color: #080710;
+      border-radius: 4px;
+      text-align: center;
+      padding: 15px 0;
+      display: block;
+      font-size: 18px;
+      width: 100%;
+      margin-top: 46px;
+      font-weight: bold;
+    }
+
+
+    @media (max-width: 437px) {
+      .login {
+        width: 85vw;
+      }
+
+      .shape {
+        width: 10rem;
+        height: 10rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login">
+    <div class="shape shape--one"></div>
+    <div class="shape shape--two"></div>
+    <form>
+      <h2>leach mob login</h2>
+      <div class="form__input-wrapper">
+        <input type="email" placeholder="Enter email or phone" autofocus autocomplete="additional-name" id="ipt-email">
+        <input type="password" placeholder="Enter password like : #loremipsum99" minlength="5" maxlength="14"
+          autocomplete="new-password" id="ipt-password">
+        <button type="submit" class="login_bottom">login in</button>
+      </div>
+    </form>
+  </div>
+  <script>
+    const $ = document
+    const formElam = $.querySelector("form")
+    let iptEmail = $.querySelector("#ipt-email")
+    let iptPass = $.querySelector("#ipt-password")
+    let btn = $.querySelector(".login_bottom")
+
+    async function handleLogin({ email, password }) {
+      try {
+        btn.innerHTML = "loading ..."
+        const res = await fetch(`http://localhost:3000/users?email=${email}&pass=${password}`)
+
+        console.log(res)
+        const data = await res.json()
+        console.log(data)
+
+      } catch (err) {
+        console.log(err)
+      } finally {
+        iptEmail.value = ""
+        iptPass.value = ""
+        btn.innerHTML = "Login"
+      }
+    }
+
+    formElam.addEventListener("submit", e => {
+      e.preventDefault()
+      const usermail = iptEmail.value
+      const password = iptPass.value
+
+      if (usermail.length < 13) {
+        alert("ipt email is not valid")
+      } else if (password.length < 6) {
+        alert("ipt pass is not valid")
+      } else {
+        handleLogin({
+          email: usermail,
+          password
+        })
+      }
+    })
+  </script>
+</body>
+</html>
