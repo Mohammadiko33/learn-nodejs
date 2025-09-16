@@ -1,9 +1,9 @@
 const http = require("http");
 
 const users = [
-  { id: 1, email: "mohammad@gmail.com", password: "123123" },
-  { id: 2, email: "reza@gmail.com", password: "456456456" },
-  { id: 3, email: "amir@gmail.com", password: "789789789" },
+  { id: 1, email: "mohammad@gmail.com", password: "123456" },
+  { id: 2, email: "reza@gmail.com", password: "456789" },
+  { id: 3, email: "amir@gmail.com", password: "789123" },
 ];
 
 http
