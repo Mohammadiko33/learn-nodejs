@@ -320,7 +320,7 @@
       try {
         userListContainer.style.display = "none"
         btn.innerHTML = "loading ..."
-        const res = await fetch(`http://localhost:3000/users?email=${email}&pass=${password}`)
+        const res = await fetch(`http://localhost:3000/api/users?email=${email}&pass=${password}`)
 
         console.log(res)
         const data = await res.json()

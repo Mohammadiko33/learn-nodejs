@@ -1,5 +1,4 @@
 const http = require("http");
-const url = require("url");
 
 const users = [
   { id: 1, email: "mohammad@gmail.com", password: "123123" },
@@ -13,37 +12,46 @@ http
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-    if (req.method === "OPTIONS") {
-      res.writeHead(204);
-      res.end();
-      return;
-    }
+    if (req.url.startsWith("/api/users")) {
+      if (req.method === "OPTIONS") {
+        res.writeHead(204);
+        res.end();
+        return;
+      }
 
-    console.log(req.url);
-    const myUrl = new URL(req.url, `http://${req.headers.host}`);
-    const usermail = myUrl.searchParams.get("email");
-    const password = myUrl.searchParams.get("pass");
+      console.log(req.url);
+      const myUrl = new URL(req.url, `http://${req.headers.host}`);
+      const usermail = myUrl.searchParams.get("email");
+      const password = myUrl.searchParams.get("pass");
 
-    const findDataFromEmail = users.find((user) => user.email === usermail);
-    if (findDataFromEmail) {
-      const mainUser = users.find((user) => user.password === password);
-      if (mainUser) {
-        res.write(JSON.stringify({ success: true, user: mainUser }));
+      const findDataFromEmail = users.find((user) => user.email.toLowerCase() === usermail.toLowerCase());
+      if (findDataFromEmail) {
+        const mainUser = users.find((user) => user.password === password);
+        if (mainUser) {
+          res.write(JSON.stringify({ success: true, user: mainUser }));
+        } else {
+          res.write(
+            JSON.stringify({
+              success: false,
+              message: "password is wrong, are you forgot your password ?",
+            })
+          );
+        }
       } else {
         res.write(
           JSON.stringify({
             success: false,
-            message: "password is wrong, are you forgot your password ?",
+            message: "Email Not founded You need Register first",
           })
         );
       }
     } else {
-      res.write(
-        JSON.stringify({
-          success: false,
-          message: "Email Not founded You need Register first",
-        })
-      );
+        res.write(
+          JSON.stringify({
+            success: false,
+            message: "404 , api is not founded",
+          })
+        );
     }
     res.end();
   })
