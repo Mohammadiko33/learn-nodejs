@@ -1,20 +1,26 @@
 {
-  "name": "learn-node",
+  "name": "learnnode",
   "version": "1.0.0",
   "description": "",
-  "license": "ISC",
-  "author": "mohamamdiko",
-  "type": "commonjs",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx nodemon sabzlearn/app.js"
+    "dev": "npx nodemon Sabzlearn/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mohammadiko33/learn-nodejs.git"
+  },
+  "keywords": [],
+  "author": "developer-iko-mike",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Mohammadiko33/learn-nodejs/issues"
   },
   "dependencies": {
-    "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "lodash": "^4.17.21",
-    "mongoose": "^8.18.1",
-    "morgan": "^1.10.1"
-  }
+    "lodash": "^4.17.21"
+  },
+  "homepage": "https://github.com/Mohammadiko33/learn-nodejs#readme"
 }
