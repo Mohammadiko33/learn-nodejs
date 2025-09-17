@@ -49,10 +49,15 @@ const App = () => {
         body: JSON.stringify(form)
       })
       const parseRes = await res.json()
+      if (!parseRes.message){
       console.log(parseRes)
+      console.log(res.status)
       if (res.status === 201){
         toast.success("submited", { position: "bottom-left" })
       }
+    } else {
+      toast.warn(parseRes.message , { position: "bottom-left" })
+    }
     } catch (err) {
       toast.error("you have error check console" , { position: "bottom-left" })
       console.log(err)
