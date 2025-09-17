@@ -34,14 +34,14 @@ const App = () => {
       return;
     }
     if (form.gmail.length < 13) {
-      toast.error("gmail input must be 3 chrackter", { position: "bottom-left" })
+      toast.error("gmail input must be 13 chrackter", { position: "bottom-left" })
       return;
     }
     if (form.password.length < 6) {
-      toast.error("password input must be 3 chrackter", { position: "bottom-left" })
+      toast.error("password input must be 6 chrackter", { position: "bottom-left" })
       return;
     }
-    setLoading(false)
+    setLoading(true)
     try {
       const res = await fetch("http://localhost:3000/api/users/new-user" , {
         method: "POST",
@@ -54,7 +54,7 @@ const App = () => {
         toast.success("submited", { position: "bottom-left" })
       }
     } catch (err) {
-      toast.error("you have error check console")
+      toast.error("you have error check console" , { position: "bottom-left" })
       console.log(err)
     } finally {
       setLoading(false)
@@ -113,7 +113,8 @@ const App = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-500 duration-200 hover:scale-105 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 cursor-pointer"
+          className={`w-full bg-blue-500 duration-200 text-white py-2 rounded-lg font-semibold ${loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-blue-600 hover:scale-105"}`}
+          disabled={loading}
         >
           {loading ? "Loading ..." : "Register"}
         </button>
