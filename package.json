@@ -22,7 +22,8 @@
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "mysql": "^2.18.1"
   },
   "homepage": "https://github.com/Mohammadiko33/learn-nodejs#readme"
 }
