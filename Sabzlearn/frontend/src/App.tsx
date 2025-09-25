@@ -1,29 +1,59 @@
-import React, { useState, type ChangeEvent } from "react";
+import React, { useEffect, useState, type ChangeEvent } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import Modal from "./Components/Modal";
 export type Che = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+const BASE_API = "http://localhost:3000/users/";
 
 interface Iform {
   username: string,
-  gmail: string,
+  email: string,
   password: string;
 }
 
+export interface IformId extends Iform {
+  id: number;
+}
+
 const App = () => {
-
-
+  const [users, setUser] = useState<IformId[] | null>(null)
+  const [usersLoading, setUserLoading] = useState<boolean>(false)
+  const [deleteShow, setDeleteShow] = useState<boolean>(false)
+  const [editShow, setEditShow] = useState<boolean>(false)
+  const [actionId, setActionId] = useState<number>(1)
+  const [loadingEdit, setLoadingEdit] = useState<boolean>(false)
+  const [loadingDelete, setLoadingDelete] = useState<boolean>(false)
+  const [loadingRegister, setLoadingRegister] = useState<boolean>(false)
   const [form, setForm] = useState<Iform>({
     username: "",
-    gmail: "",
+    email: "",
     password: ""
   });
-  const [editForm , setEditForm] = useState<Iform>({
-    username: "yadowithme",
-    gmail: "",
+  const [editForm, setEditForm] = useState<Iform>({
+    username: "",
+    email: "",
     password: "",
   })
-  const [loading, setLoading] = useState<boolean>(false)
-  const [loadingEdit, setLoadingEdit] = useState<boolean>(false)
+  const getUsers = async () => {
+    try {
+      setUserLoading(true)
+      const res = await fetch(BASE_API)
+      console.log(res)
+      const data = await res.json()
+      console.log(data)
+      if (data.length) {
+        setUser(data)
+      } else {
+        toast("data not founded check console")
+        console.log(data)
+      }
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setUserLoading(false)
+    }
+  }
+
+  useEffect(() => { getUsers() }, [])
 
   const handleChange = (e: Che) => {
     const { name, value } = e.target;
@@ -35,74 +65,98 @@ const App = () => {
   const handleChangeEditForm = (e: Che) => {
     const { name, value } = e.target;
     setEditForm({
-      ...form,
+      ...editForm,
       [name]: value,
     });
   };
-  const [deleteShow, setDeleteShow] = useState<boolean>(false)
-  const [editShow, setEditShow] = useState<boolean>(false)
-  const [actionId, setActionId] = useState<string>("1")
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (form.username.length < 3) {
-      toast.error("username input must be 3 chrackter")
-      return;
-    }
-    if (form.gmail.length < 13) {
-      toast.error("gmail input must be 13 chrackter")
-      return;
-    }
-    if (form.password.length < 6) {
-      toast.error("password input must be 6 chrackter")
-      return;
-    }
-    setLoading(true)
+    const { username, email, password } = form;
+    if (username.length < 3) return toast("username not valid min length 3");
+    if (email.length < 13) return toast("email not valid min length 13");
+    if (password.length < 6) return toast("password not valid min length 6");
     try {
-      const res = await fetch("http://localhost:3000/")
+      setLoadingRegister(true)
+      const res = await fetch(BASE_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          email,
+          password
+        })
+      })
+      toast(res.status === 200 ? "user created 😊" : "you have error")
       console.log(res)
-      const parseRes = await res.json()
-      console.log(parseRes)
-      toast.success(parseRes.message)
-      setLoading(false)
-      if (!parseRes.message) {
-        console.log(parseRes)
-        console.log(res.status)
-        if (res.status === 201) {
-          toast.success("submited")
-        }
-      } else {
-        toast.warn(parseRes.message)
-      }
+      const data = await res.json()
+      console.log(data)
     } catch (err) {
-      toast.error("you have error check console")
       console.log(err)
     } finally {
-      setLoading(false)
+      setLoadingRegister(false)
+      getUsers()
     }
   }
-
-  const showDeleteModal = (userId: string) => {
+  const showDeleteModal = (userId: number) => {
     setActionId(userId)
     setDeleteShow(true)
   }
-  const showEditModal = (userId: string) => {
-    setActionId(userId)
-    setEditShow(true)
+  const showEditModal = async (userId: number) => {
+    try {
+      const res = await fetch(BASE_API + userId)
+      console.log(res)
+      const { username, email, password } = await res.json()
+      setEditForm({
+        username,
+        email,
+        password,
+      })
+    } catch (err) {
+      toast("you have error")
+      console.log(err)
+    } finally {
+      setActionId(userId)
+      setEditShow(true)
+    }
   }
-
-  const handleDeleteUser = () => {
-    toast(`deleted user with id : ${actionId}`)
-    setDeleteShow(false)
+  const handleDeleteUser = async () => {
+    try {
+      setLoadingDelete(true)
+      const res = await fetch(BASE_API + actionId, { method: "DELETE" })
+      console.log(res)
+      toast(res.status === 200 ? `delete user with id ${actionId} successfully` : "res status is not ok")
+      getUsers()
+      const data = await res.json()
+      console.log(data)
+    } catch (err) {
+      toast("you have error check console")
+      console.log(err)
+    } finally {
+      setLoadingDelete(false)
+      setDeleteShow(false)
+    }
   }
-
-  const handleEditUser = () => {
+  const handleEditUser = async () => {
     setLoadingEdit(true)
-    setTimeout(() => {
-     toast(`edit user with id : ${actionId}`)
+    try {
+      const res = await fetch(BASE_API + actionId , {
+        method: "PUT",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(editForm)
+      })
+      console.log(res)
+      toast(res.status === 200 ? "edit with success" : "you have error")
+      const data = await res.json()
+      console.log(data)
+    } catch (err) {
+      toast("you have error")
+      console.log(err)
+    } finally {
+      toast(`edit user with id : ${actionId}`)
+      getUsers()
       setEditShow(false)
       setLoadingEdit(false)
-    }, 500);
+    }
   }
 
   return (
@@ -133,9 +187,9 @@ const App = () => {
         <div>
           <input
             type="text"
-            name="gmail"
+            name="email"
             placeholder="Enter your email *"
-            value={form.gmail}
+            value={form.email}
             onChange={handleChange}
             className="ipt"
           />
@@ -161,24 +215,34 @@ const App = () => {
 
         <button
           type="submit"
-          className={`w-full bg-sky-500 duration-200 text-white py-2 rounded-lg font-semibold ${loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-blue-600 hover:scale-105"}`}
-          disabled={loading}
+          className={`w-full bg-sky-500 duration-200 text-white py-2 rounded-lg font-semibold ${loadingRegister ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-blue-600 hover:scale-105"}`}
+          disabled={loadingRegister}
         >
-          {loading ? "Loading ..." : "Register"}
+          {loadingRegister ? "Loading ..." : "Register"}
         </button>
-
       </form>
-      <div className="w-[28.1rem] mt-2">
-        <div className="bg-white users flex items-center justify-between pl-3 p-2 w-full rounded-lg">
-          <p className="sss">User</p>
-          <p className="sss">user.gmail.com</p>
-          <div className="flex gap-2">
-            <button className="btn bg-red-400" onClick={() => showDeleteModal("1")}>Delete</button>
-            <button className="btn bg-blue-400" onClick={() => showEditModal("1")}>Edit</button>
+      {
+        usersLoading ? (
+          <div className="text-center scale-110">
+            loading get users ...
           </div>
-        </div>
-      </div>
-      lorem
+        ) : (
+          <div className="">
+            {
+              users?.map(({ email, username, id }) => (
+                <div key={id} className="w-[32rem] mt-2 bg-white users flex items-center justify-between pl-3 p-2 rounded-lg">
+                  <p className="sss">{username}</p>
+                  <p className="sss">{email}</p>
+                  <div className="flex gap-2">
+                    <button className="btn bg-red-400" onClick={() => showDeleteModal(id)}>Delete</button>
+                    <button className="btn bg-blue-400" onClick={() => showEditModal(id)}>Edit</button>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        )
+      }
       <Modal show={deleteShow} setShow={setDeleteShow} >
         <div className="fixed z-0 w-screen h-screen min-h-screen bg-black/75" onClick={() => { }}></div>
         <div className="flex justify-center items-center">
@@ -186,8 +250,8 @@ const App = () => {
             <div className="sure">
               <p className="mb-8 text-xl capitalize">are you sure delete user ?</p>
               <div className="flex justify-center gap-2">
-                <button className="btn capitalize bg-blue-400" onClick={() => setDeleteShow(false)}>no</button>
-                <button className="btn capitalize bg-red-400" onClick={handleDeleteUser}>yes</button>
+                <button className="btn capitalize bg-blue-400 disabled:hover:bg-blue-400 disabled:opacity-70 disabled:hover:scale-100 " disabled={loadingDelete} onClick={() => setDeleteShow(false)}>no</button>
+                <button className="btn capitalize bg-red-400 disabled:hover:bg-red-400 disabled:opacity-70 disabled:hover:scale-100 " disabled={loadingDelete} onClick={handleDeleteUser}>{loadingDelete ? "deleting ..." : "yes"}</button>
               </div>
             </div>
           </div>
@@ -195,7 +259,7 @@ const App = () => {
       </Modal>
       <Modal show={editShow} setShow={setEditShow} >
         <form
-          // onSubmit={handleSubmit}
+          onSubmit={handleSubmit}
           className="w-full max-w-md bg-white px-6 pt-2.5 rounded-xl space-y-4"
         >
           <div>
@@ -213,9 +277,9 @@ const App = () => {
           <div>
             <input
               type="text"
-              name="gmail"
+              name="email"
               placeholder="Enter your email *"
-              value={editForm.gmail}
+              value={editForm.email}
               onChange={handleChangeEditForm}
               className="ipt"
             />
