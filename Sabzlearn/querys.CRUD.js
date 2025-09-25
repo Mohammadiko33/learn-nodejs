@@ -86,12 +86,12 @@ function createQuery({
     placeholders = values.map(() => "?").join(", ");
     params.push(...values);
   } else if (typeof values === "object") {
-    // values به صورت object: تبدیل به ستون‌ها و مقادیر
-    const keys = Object.keys(values);
+    // حذف id اگر null باشه
+    const keys = Object.keys(values).filter(k => !(k === "id" && values[k] === null));
     colsPart = `(${keys.map(k => wrapId(k, wrapIdentifiers)).join(", ")})`;
     placeholders = keys.map(() => "?").join(", ");
     params.push(...keys.map(k => values[k]));
-  } else {
+} else {
     throw new Error("values must be array or object");
   }
 
@@ -207,7 +207,7 @@ const { query, params } = readQuery({
   conditions: { price: { op: ">", value: 100000 } } // شرط دلخواه
 });
 // اجرا با mysql
-dbConnect.query(query, params, (err, rows) => {
+db.query(query, params, (err, rows) => {
   if (err) console.error(err);
   else console.log(rows);
 });
@@ -219,7 +219,7 @@ const { query, params } = createQuery({
   values: { title: "Node.js Basics", price: 250000, teacher: "Ali" }
 });
 // اجرا
-dbConnect.query(query, params, (err, result) => {
+db.query(query, params, (err, result) => {
   if (err) console.error(err);
   else console.log(result);
 });
@@ -232,7 +232,7 @@ const { query, params } = updateQuery({
   conditions: { title: "Node.js Basics" }       // شرط WHERE
 });
 // اجرا
-dbConnect.query(query, params, (err, result) => {
+db.query(query, params, (err, result) => {
   if (err) console.error(err);
   else console.log(result);
 });
@@ -244,7 +244,7 @@ const { query, params } = deleteQuery({
   conditions: { teacher: "Ali" }                // شرط حذف
 });
 // اجرا
-dbConnect.query(query, params, (err, result) => {
+db.query(query, params, (err, result) => {
   if (err) console.error(err);
   else console.log(result);
 });

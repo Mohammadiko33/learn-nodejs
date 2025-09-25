@@ -3,3 +3,20 @@
 .my-toast-font {
   font-family: "Vazir", sans-serif;
 }
+
+.ipt {
+  @apply w-full px-4 py-2 border border-sky-400 rounded-lg
+}
+
+.btn {
+  /* need bg-[your color] */
+  @apply text-white py-1.5 px-4 cursor-pointer rounded-md hover:brightness-75 duration-250
+}
+
+.a {
+  @apply bg-sky-400 text-red-100
+}
+
+b {
+  color: #00bcff;
+}
