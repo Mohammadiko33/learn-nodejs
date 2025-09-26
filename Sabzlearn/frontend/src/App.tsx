@@ -156,6 +156,11 @@ const App = () => {
       getUsers()
       setEditShow(false)
       setLoadingEdit(false)
+      setEditForm({
+        username: "",
+        email: "",
+        password: "",
+      })
     }
   }
 
