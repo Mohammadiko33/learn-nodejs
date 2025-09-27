@@ -46,11 +46,7 @@ const App = () => {
       const res = await fetch(BASE_API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username:"helloworld",
-          email:"helloworld@gmail.com",
-          password:"helloorcom",
-        })
+        body: JSON.stringify(form)
       })
       const data: { message: string } = await res.json()
       console.log(data)
