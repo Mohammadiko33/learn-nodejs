@@ -1,6 +1,6 @@
 import React, { useEffect, useState, type ChangeEvent } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import Modal from "./Components/Modal";
+// import Modal from "./Components/Modal";
 export type Che = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 const BASE_API = "http://localhost:3000/users/";
 
@@ -15,42 +15,14 @@ export interface IformId extends Iform {
 }
 
 const App = () => {
-  const [users, setUser] = useState<IformId[] | null>(null)
-  const [usersLoading, setUserLoading] = useState<boolean>(false)
-  const [deleteShow, setDeleteShow] = useState<boolean>(false)
-  const [editShow, setEditShow] = useState<boolean>(false)
-  const [actionId, setActionId] = useState<number>(1)
-  const [loadingEdit, setLoadingEdit] = useState<boolean>(false)
-  const [loadingDelete, setLoadingDelete] = useState<boolean>(false)
-  const [loadingRegister, setLoadingRegister] = useState<boolean>(false)
   const [form, setForm] = useState<Iform>({
-    username: "",
-    email: "",
-    password: ""
+    username: "MohammadiKO",
+    email: "mohammad@gmail.com",
+    password: "mohammad33"
   });
-  const [editForm, setEditForm] = useState<Iform>({
-    username: "",
-    email: "",
-    password: "",
-  })
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false)
   const getUsers = async () => {
-    try {
-      setUserLoading(true)
-      const res = await fetch(BASE_API)
-      console.log(res)
-      const data = await res.json()
-      console.log(data)
-      if (data.length) {
-        setUser(data)
-      } else {
-        toast("data not founded check console")
-        console.log(data)
-      }
-    } catch (err) {
-      console.log(err)
-    } finally {
-      setUserLoading(false)
-    }
+    toast("user getted")
   }
 
   useEffect(() => { getUsers() }, [])
@@ -62,107 +34,38 @@ const App = () => {
       [name]: value,
     });
   };
-  const handleChangeEditForm = (e: Che) => {
-    const { name, value } = e.target;
-    setEditForm({
-      ...editForm,
-      [name]: value,
-    });
-  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const { username, email, password } = form;
     if (username.length < 3) return toast("username not valid min length 3");
     if (email.length < 13) return toast("email not valid min length 13");
     if (password.length < 6) return toast("password not valid min length 6");
+    setSubmitLoading(true)
     try {
-      setLoadingRegister(true)
       const res = await fetch(BASE_API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          username,
-          email,
-          password
+          username:"helloworld",
+          email:"helloworld@gmail.com",
+          password:"helloorcom",
         })
       })
-      toast(res.status === 200 ? "user created 😊" : "you have error")
-      console.log(res)
-      const data = await res.json()
+      const data: { message: string } = await res.json()
       console.log(data)
+      if (Object.keys(data).length && data.message) {
+        toast(data.message)
+      }
+
     } catch (err) {
       console.log(err)
-    } finally {
-      setLoadingRegister(false)
-      getUsers()
-    }
-  }
-  const showDeleteModal = (userId: number) => {
-    setActionId(userId)
-    setDeleteShow(true)
-  }
-  const showEditModal = async (userId: number) => {
-    try {
-      const res = await fetch(BASE_API + userId)
-      console.log(res)
-      const { username, email, password } = await res.json()
-      setEditForm({
-        username,
-        email,
-        password,
-      })
-    } catch (err) {
       toast("you have error")
-      console.log(err)
     } finally {
-      setActionId(userId)
-      setEditShow(true)
+      setSubmitLoading(false)
     }
   }
-  const handleDeleteUser = async () => {
-    try {
-      setLoadingDelete(true)
-      const res = await fetch(BASE_API + actionId, { method: "DELETE" })
-      console.log(res)
-      toast(res.status === 200 ? `delete user with id ${actionId} successfully` : "res status is not ok")
-      getUsers()
-      const data = await res.json()
-      console.log(data)
-    } catch (err) {
-      toast("you have error check console")
-      console.log(err)
-    } finally {
-      setLoadingDelete(false)
-      setDeleteShow(false)
-    }
-  }
-  const handleEditUser = async () => {
-    setLoadingEdit(true)
-    try {
-      const res = await fetch(BASE_API + actionId , {
-        method: "PUT",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(editForm)
-      })
-      console.log(res)
-      toast(res.status === 200 ? "edit with success" : "you have error")
-      const data = await res.json()
-      console.log(data)
-    } catch (err) {
-      toast("you have error")
-      console.log(err)
-    } finally {
-      toast(`edit user with id : ${actionId}`)
-      getUsers()
-      setEditShow(false)
-      setLoadingEdit(false)
-      setEditForm({
-        username: "",
-        email: "",
-        password: "",
-      })
-    }
-  }
+
 
   return (
     <div className="flex flex-col items-center pt-5 min-h-screen bg-black">
@@ -220,13 +123,14 @@ const App = () => {
 
         <button
           type="submit"
-          className={`w-full bg-sky-500 duration-200 text-white py-2 rounded-lg font-semibold ${loadingRegister ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-blue-600 hover:scale-105"}`}
-          disabled={loadingRegister}
+          className={`w-full bg-sky-500 duration-200 text-white py-2 rounded-lg font-semibold ${submitLoading ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-blue-600 hover:scale-105"}`}
+          // className={`w-full bg-sky-500 duration-200 text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-blue-600 hover:scale-105`}
+          disabled={submitLoading}
         >
-          {loadingRegister ? "Loading ..." : "Register"}
+          {submitLoading ? "Loading ..." : "Register"}
         </button>
       </form>
-      {
+      {/* {
         usersLoading ? (
           <div className="text-center scale-110">
             loading get users ...
@@ -319,7 +223,7 @@ const App = () => {
           </button>
 
         </form>
-      </Modal>
+      </Modal> */}
 
     </div>
   );

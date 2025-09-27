@@ -24,7 +24,7 @@
     "express": "^5.1.0",
     "lodash": "^4.17.21",
     "mongodb": "^6.20.0",
-    "mongoose": "^8.18.1",
+    "mongoose": "^8.18.2",
     "mysql": "^2.18.1"
   },
   "homepage": "https://github.com/Mohammadiko33/learn-nodejs#readme"
