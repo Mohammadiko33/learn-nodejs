@@ -75,4 +75,28 @@ userapp.get("/" , (req , res) => {
     });
 })
 
+userapp.put("/:userId" , (req , res) => {
+    // wave 1 , for every if
+  // User.findOneAndUpdate({ _id: req.params.userId } , req.body)
+  //   .then((result) => {
+  //     res.send({ message: `🔥 user updated successfully` });
+  //     console.log(result);
+  //   })
+  //   .catch((err) => {
+  //     res.send({ message: `🔥 user updated it feild` });
+  //     console.log(err);
+  //   });
+  // wave 2 , for just id
+  console.log(req.body)
+    User.findByIdAndUpdate( req.params.userId , req.body )
+    .then((result) => {
+      res.send({ message: `🔥 user updated successfully` });
+      console.log(result);
+    })
+    .catch((err) => {
+      res.send({ message: `🔥 user updated it feild` });
+      console.log(err);
+    });
+})
+
 module.exports = userapp;

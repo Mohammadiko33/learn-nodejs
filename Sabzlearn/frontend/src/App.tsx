@@ -15,18 +15,26 @@ export interface IformId extends Iform {
 }
 
 const App = () => {
+  const [users, setUsers] = useState<IformId[] | null>(null)
+  const [usersLoading, setUserLoading] = useState<boolean>(false)
+  const [deleteShow, setDeleteShow] = useState<boolean>(false)
+  const [editShow, setEditShow] = useState<boolean>(false)
+  const [actionId, setActionId] = useState<string | null>(null)
+  const [loadingEdit, setLoadingEdit] = useState<boolean>(false)
+  const [loadingDelete, setLoadingDelete] = useState<boolean>(false)
+  const [loadingRegister, setLoadingRegister] = useState<boolean>(false)
   const [form, setForm] = useState<Iform>({
     username: "",
-    email: "@gmail.com",
+    email: "",
     password: ""
   });
-  const [users, setUsers] = useState<IformId[] | null>(null)
-  const [submitLoading, setSubmitLoading] = useState<boolean>(false)
-  const [deleteShow, setDeleteShow] = useState<boolean>(false)
-  // const [editShow, setEditShow] = useState<boolean>(false)
-  const [actionId, setActionId] = useState<string>('1')
-  const [loadingDelete, setLoadingDelete] = useState<boolean>(false)
+  const [editForm, setEditForm] = useState<Iform>({
+    username: "",
+    email: "",
+    password: "",
+  })
   const getUsers = async () => {
+    setUserLoading(true)
     try {
       const res = await fetch(BASE_API)
       const data = await res.json()
@@ -35,6 +43,8 @@ const App = () => {
     } catch (err) {
       console.log(err)
       toast("get user feild")
+    } finally {
+      setUserLoading(false)
     }
   }
 
@@ -48,13 +58,21 @@ const App = () => {
     });
   };
 
+  const handleChangeEditForm = (e: Che) => {
+    const { name, value } = e.target;
+    setEditForm({
+      ...editForm,
+      [name]: value,
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const { username, email, password } = form;
     if (username.length < 3) return toast("username not valid min length 3");
     if (email.length < 13) return toast("email not valid min length 13");
     if (password.length < 6) return toast("password not valid min length 6");
-    setSubmitLoading(true)
+    setLoadingRegister(true)
     try {
       const res = await fetch(BASE_API, {
         method: "POST",
@@ -71,7 +89,7 @@ const App = () => {
       console.log(err)
       toast("you have error")
     } finally {
-      setSubmitLoading(false)
+      setLoadingRegister(false)
     }
   }
 
@@ -96,6 +114,53 @@ const App = () => {
       setLoadingDelete(false)
     }
     setDeleteShow(false)
+  }
+
+  const showEditModal = async (userId: string) => {
+    try {
+      const res = await fetch(BASE_API + userId)
+      const { username, email, password } = await res.json()
+      setEditForm({
+        username,
+        email,
+        password,
+      })
+    } catch (err) {
+      toast("you have error")
+      console.log(err)
+    } finally {
+      setActionId(userId)
+      setEditShow(true)
+    }
+  }
+
+  const handleEditUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    console.log(editForm)
+    setLoadingEdit(true)
+    const { username, email, password } = editForm;
+    if (username.length < 3) return toast("username not valid min length 3");
+    if (email.length < 13) return toast("email not valid min length 13");
+    if (password.length < 6) return toast("password not valid min length 6");
+    try {
+      const res = await fetch(BASE_API + actionId, {
+        method: "PUT",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(editForm)
+      })
+      const data = await res.json()
+      console.log(data)
+      if (Object.keys(data).length && data.message) {
+        toast(data.message)
+      }
+    } catch (err) {
+      console.log(err)
+      toast("you have error check console")
+    } finally {
+      getUsers()
+      setLoadingEdit(false)
+      setEditShow(false)
+    }
   }
 
   return (
@@ -154,35 +219,35 @@ const App = () => {
 
         <button
           type="submit"
-          className={`w-full bg-sky-500 duration-200 text-white py-2 rounded-lg font-semibold ${submitLoading ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-blue-600 hover:scale-105"}`}
+          className={`w-full bg-sky-500 duration-200 text-white py-2 rounded-lg font-semibold ${loadingRegister ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-blue-600 hover:scale-105"}`}
           // className={`w-full bg-sky-500 duration-200 text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-blue-600 hover:scale-105`}
-          disabled={submitLoading}
+          disabled={loadingRegister}
         >
-          {submitLoading ? "Loading ..." : "Register"}
+          {loadingRegister ? "Loading ..." : "Register"}
         </button>
       </form>
-      {/* {
+      {
         usersLoading ? (
           <div className="text-center scale-110">
             loading get users ...
           </div>
-        ) : ( */}
-      <div className="">
-        {
-          users?.map(({ email, username, _id }) => (
-            <div key={_id} className="w-[32rem] mt-2 bg-white users flex items-center justify-between pl-3 p-2 rounded-lg">
-              <p className="sss">{username}</p>
-              <p className="sss">{email}</p>
-              <div className="flex gap-2">
-                <button className="btn bg-red-400" onClick={() => showDeleteModal(_id)}>Delete</button>
-                {/* <button className="btn bg-blue-400" onClick={() => showEditModal(_id)}>Edit</button> */}
-              </div>
-            </div>
-          ))
-        }
-      </div>
-      {/* )
-      } */}
+        ) : (
+          <div className="">
+            {
+              users?.map(({ email, username, _id }) => (
+                <div key={_id} className="w-[32rem] mt-2 bg-white users flex items-center justify-between pl-3 p-2 rounded-lg">
+                  <p className="sss">{username}</p>
+                  <p className="sss">{email}</p>
+                  <div className="flex gap-2">
+                    <button className="btn bg-red-400" onClick={() => showDeleteModal(_id)}>Delete</button>
+                    <button className="btn bg-blue-400" onClick={() => showEditModal(_id)}>Edit</button>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+
+        )}
       <Modal show={deleteShow} setShow={setDeleteShow} >
         <div className="fixed z-0 w-screen h-screen min-h-screen bg-black/75" onClick={() => { }}></div>
         <div className="flex justify-center items-center">
@@ -197,9 +262,9 @@ const App = () => {
           </div>
         </div>
       </Modal>
-      {/* <Modal show={editShow} setShow={setEditShow} >
+      <Modal show={editShow} setShow={setEditShow} >
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleEditUser}
           className="w-full max-w-md bg-white px-6 pt-2.5 rounded-xl space-y-4"
         >
           <div>
@@ -240,7 +305,6 @@ const App = () => {
             type="submit"
             className={`w-full bg-orange-400 duration-200 text-white py-2 rounded-lg font-semibold ${loadingEdit ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-orange-500 hover:scale-105"}`}
             disabled={loadingEdit}
-            onClick={handleEditUser}
           >
             {loadingEdit ? "Loading ..." : "Register"}
           </button>
@@ -254,7 +318,7 @@ const App = () => {
           </button>
 
         </form>
-      </Modal> */}
+      </Modal>
 
     </div>
   );
