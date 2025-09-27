@@ -1,6 +1,6 @@
 import React, { useEffect, useState, type ChangeEvent } from "react";
 import { toast, ToastContainer } from "react-toastify";
-// import Modal from "./Components/Modal";
+import Modal from "./Components/Modal";
 export type Che = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 const BASE_API = "http://localhost:3000/users/";
 
@@ -11,16 +11,40 @@ interface Iform {
 }
 
 export interface IformId extends Iform {
-  id: number;
+  _id: string;
 }
 
 const App = () => {
   const [form, setForm] = useState<Iform>({
-    username: "MohammadiKO",
-    email: "mohammad@gmail.com",
-    password: "mohammad33"
+    username: "",
+    email: "@gmail.com",
+    password: ""
   });
+  const [users, setUsers] = useState<IformId[] | null>([
+    {
+      _id: "1",
+      username: "mohammad",
+      email: "mohammad@gmail.com",
+      password: "123456"
+    },
+    {
+      _id: "2",
+      username: "amir",
+      email: "amir@gmail.com",
+      password: "654321"
+    },
+    {
+      _id: "68d8027ebf0fdaa4dc8f0b6f",
+      username: "rezza",
+      email: "rezza@gmail.com",
+      password: "123852"
+    }
+  ])
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
+  const [deleteShow, setDeleteShow] = useState<boolean>(false)
+  // const [editShow, setEditShow] = useState<boolean>(false)
+  const [actionId, setActionId] = useState<string>('1')
+  const [loadingDelete, setLoadingDelete] = useState<boolean>(false)
   const getUsers = async () => {
     toast("user getted")
   }
@@ -62,6 +86,28 @@ const App = () => {
     }
   }
 
+  const showDeleteModal = (userId: string) => {
+    setActionId(userId)
+    setDeleteShow(true)
+  }
+
+  const handleDeleteUser = async () => {
+    setLoadingDelete(true)
+    try {
+      const res = await fetch(BASE_API + actionId, { method: "DELETE" })
+      const data = await res.json()
+      if (Object.keys(data).length && data.message) {
+        toast(data.message)
+      }
+      getUsers()
+    } catch (err) {
+      toast("you have a error check console")
+      console.log(err)
+    } finally {
+      setLoadingDelete(false)
+    }
+    setDeleteShow(false)
+  }
 
   return (
     <div className="flex flex-col items-center pt-5 min-h-screen bg-black">
@@ -131,23 +177,23 @@ const App = () => {
           <div className="text-center scale-110">
             loading get users ...
           </div>
-        ) : (
-          <div className="">
-            {
-              users?.map(({ email, username, id }) => (
-                <div key={id} className="w-[32rem] mt-2 bg-white users flex items-center justify-between pl-3 p-2 rounded-lg">
-                  <p className="sss">{username}</p>
-                  <p className="sss">{email}</p>
-                  <div className="flex gap-2">
-                    <button className="btn bg-red-400" onClick={() => showDeleteModal(id)}>Delete</button>
-                    <button className="btn bg-blue-400" onClick={() => showEditModal(id)}>Edit</button>
-                  </div>
-                </div>
-              ))
-            }
-          </div>
-        )
-      }
+        ) : ( */}
+      <div className="">
+        {
+          users?.map(({ email, username, _id }) => (
+            <div key={_id} className="w-[32rem] mt-2 bg-white users flex items-center justify-between pl-3 p-2 rounded-lg">
+              <p className="sss">{username}</p>
+              <p className="sss">{email}</p>
+              <div className="flex gap-2">
+                <button className="btn bg-red-400" onClick={() => showDeleteModal(_id)}>Delete</button>
+                {/* <button className="btn bg-blue-400" onClick={() => showEditModal(_id)}>Edit</button> */}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      {/* )
+      } */}
       <Modal show={deleteShow} setShow={setDeleteShow} >
         <div className="fixed z-0 w-screen h-screen min-h-screen bg-black/75" onClick={() => { }}></div>
         <div className="flex justify-center items-center">
@@ -162,7 +208,7 @@ const App = () => {
           </div>
         </div>
       </Modal>
-      <Modal show={editShow} setShow={setEditShow} >
+      {/* <Modal show={editShow} setShow={setEditShow} >
         <form
           onSubmit={handleSubmit}
           className="w-full max-w-md bg-white px-6 pt-2.5 rounded-xl space-y-4"
