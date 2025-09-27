@@ -41,4 +41,38 @@ userapp.delete("/:userId", (req, res) => {
     });
 });
 
+userapp.get("/:userId" , (req , res) => {
+    // wave 1 , for every if
+  User.find({ _id: req.params.userId })
+    // .then((result) => {
+    //   console.log(result);
+    //   res.json(result);
+    // })
+    // .catch((err) => {
+    //   res.send({ message: `🔥 you have error in get user with id ${req.params.userId}` });
+    //   console.log(err);
+    // });
+  // wave 2 , for just id
+    User.findById( req.params.userId )
+    .then((result) => {
+      console.log(result);
+      res.json(result);
+    })
+    .catch((err) => {
+      res.send({ message: `🔥 you have error in get user with id ${req.params.userId}` });
+      console.log(err);
+    });
+})
+userapp.get("/" , (req , res) => {
+    User.find({})
+    .then((result) => {
+      console.log(result);
+      res.json(result);
+    })
+    .catch((err) => {
+      res.send({ message: `🔥 you have error in get users` });
+      console.log(err);
+    });
+})
+
 module.exports = userapp;

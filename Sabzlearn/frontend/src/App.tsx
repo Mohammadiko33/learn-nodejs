@@ -20,33 +20,22 @@ const App = () => {
     email: "@gmail.com",
     password: ""
   });
-  const [users, setUsers] = useState<IformId[] | null>([
-    {
-      _id: "1",
-      username: "mohammad",
-      email: "mohammad@gmail.com",
-      password: "123456"
-    },
-    {
-      _id: "2",
-      username: "amir",
-      email: "amir@gmail.com",
-      password: "654321"
-    },
-    {
-      _id: "68d8027ebf0fdaa4dc8f0b6f",
-      username: "rezza",
-      email: "rezza@gmail.com",
-      password: "123852"
-    }
-  ])
+  const [users, setUsers] = useState<IformId[] | null>(null)
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
   const [deleteShow, setDeleteShow] = useState<boolean>(false)
   // const [editShow, setEditShow] = useState<boolean>(false)
   const [actionId, setActionId] = useState<string>('1')
   const [loadingDelete, setLoadingDelete] = useState<boolean>(false)
   const getUsers = async () => {
-    toast("user getted")
+    try {
+      const res = await fetch(BASE_API)
+      const data = await res.json()
+      toast("user getted")
+      setUsers(data)
+    } catch (err) {
+      console.log(err)
+      toast("get user feild")
+    }
   }
 
   useEffect(() => { getUsers() }, [])
